@@ -179,3 +179,53 @@ function importeerOudeAntwoorden() {
   });
   return rows.length - 1 + ' antwoorden overgezet';
 }
+
+/**
+ * Eenmalig: richt een lege Google Sheet in. Maakt de tabbladen Toegang, Antwoorden en Config,
+ * geeft iedereen een eigen wachtwoord en persoonlijke link, en zet de oude antwoorden over.
+ * Kies in de Apps Script-editor bovenaan de functie "inrichten" en klik op Uitvoeren.
+ * Draai je het opnieuw, dan blijven bestaande wachtwoorden en antwoorden staan.
+ */
+function inrichten() {
+  const ss = SpreadsheetApp.getActive();
+  const BASE = 'https://blominteriors.github.io/doelgroepoverzicht/#c=';
+  const mensen = [['Remy', 'beheerder'], ['Jan', 'beheerder'], ['Johan', 'invuller'], ['Andreas', 'invuller'], ['Antoni', 'invuller'],
+    ['Nicole', 'invuller'], ['Ilse', 'invuller'], ['Natasha', 'invuller'], ['Chantal', 'invuller'], ['Yvonne', 'invuller'], ['Marion', 'invuller']];
+
+  const t = sh_('Toegang');
+  if (t.getLastRow() === 0) t.appendRow(['Naam', 'Wachtwoord', 'Rol', 'Persoonlijke link']);
+  const bestaand = t.getDataRange().getValues().slice(1).map(function (r) { return String(r[0]).trim().toLowerCase(); });
+  const tekens = 'abcdefghjkmnpqrstuvwxyz23456789';
+  function ww() {
+    let s = '';
+    for (let i = 0; i < 12; i++) { s += tekens.charAt(Math.floor(Math.random() * tekens.length)); if (i === 3 || i === 7) s += '-'; }
+    return s;
+  }
+  mensen.forEach(function (m) {
+    if (bestaand.indexOf(m[0].toLowerCase()) >= 0) return;
+    const row = t.getLastRow() + 1;
+    t.getRange(row, 1, 1, 3).setValues([[m[0], ww(), m[1]]]);
+    t.getRange(row, 4).setFormula('="' + BASE + '"&B' + row);
+  });
+  t.getRange(1, 1, 1, 4).setFontWeight('bold');
+  t.setFrozenRows(1);
+  t.setColumnWidth(4, 520);
+
+  const a = sh_('Antwoorden');
+  if (a.getLastRow() === 0) a.appendRow(['Id', 'Naam', 'Bijgewerkt', 'Beantwoord', 'Klaar', 'Data']);
+  a.getRange(1, 1, 1, 6).setFontWeight('bold');
+  a.setFrozenRows(1);
+
+  const c = sh_('Config');
+  if (c.getLastRow() === 0) c.appendRow(['Sleutel', 'Waarde']);
+  c.getRange(1, 1, 1, 2).setFontWeight('bold');
+  const cfg = readConfig_();
+  if (!cfg.respondents) writeConfig_('respondents', { names: mensen.map(function (m) { return m[0]; }).concat(['QQQ Sanne', 'QQQ Bram', 'QQQ Lotte', 'QQQ Daan', 'QQQ Eva']) });
+  if (!cfg.segments) writeConfig_('segments', { list: [] });
+
+  const leeg = ss.getSheetByName('Blad1') || ss.getSheetByName('Sheet1');
+  if (leeg && leeg.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(leeg);
+  ss.setActiveSheet(t);
+
+  return importeerOudeAntwoorden();
+}

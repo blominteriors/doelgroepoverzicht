@@ -20,13 +20,14 @@ In deze repository staan geen wachtwoorden en geen antwoorden. Die staan alleen 
 
 ## Eenmalig instellen
 
-1. Open de Google Sheet, kies **Extensies > Apps Script**.
-2. Vervang de inhoud van `Code.gs` door de inhoud van `apps-script/Code.gs` en sla op.
-3. Kies bovenaan de functie `importeerOudeAntwoorden` en klik op **Uitvoeren** (geef toestemming als Google daarom vraagt).
-4. Klik op **Implementeren > Nieuwe implementatie**, type **Web-app**:
+1. Maak met het juiste Google-account een nieuwe, lege Google Sheet, bijvoorbeeld "Blom Doelgroepoverzicht 2026 – antwoorden".
+2. Kies **Extensies > Apps Script**.
+3. Vervang de inhoud van `Code.gs` door de inhoud van `apps-script/Code.gs` en sla op.
+4. Kies bovenaan de functie `inrichten` en klik op **Uitvoeren** (geef toestemming als Google daarom vraagt). Dit maakt de tabbladen, geeft iedereen een eigen wachtwoord en persoonlijke link, en zet de oude antwoorden over.
+5. Klik op **Implementeren > Nieuwe implementatie**, type **Web-app**:
    * Uitvoeren als: **Ik**
    * Wie heeft toegang: **Iedereen**
-5. Kopieer de web-app-URL (eindigt op `/exec`) en zet die in `config.js`.
+6. Kopieer de web-app-URL (eindigt op `/exec`) en zet die in `config.js`.
 
 ## Beheer
 
