@@ -14,7 +14,6 @@ Iedere invuller krijgt een persoonlijke link met een eigen wachtwoord. Invullers
 | `index.html` | De enquête en de dashboards (de pagina die iedereen opent). |
 | `config.js` | Het webadres van het Apps Script. |
 | `apps-script/Code.gs` | Het script in de Google Sheet dat wachtwoorden controleert en antwoorden opslaat. |
-| `migratie/testdata.json` | Eenmalige overzetting van de testpersonen uit de eerdere versie. Mag weg na de import. |
 
 In deze repository staan geen wachtwoorden en geen antwoorden. Die staan alleen in de Google Sheet.
 
@@ -23,7 +22,7 @@ In deze repository staan geen wachtwoorden en geen antwoorden. Die staan alleen 
 1. Maak met het juiste Google-account een nieuwe, lege Google Sheet, bijvoorbeeld "Blom Doelgroepoverzicht 2026 – antwoorden".
 2. Kies **Extensies > Apps Script**.
 3. Vervang de inhoud van `Code.gs` door de inhoud van `apps-script/Code.gs` en sla op.
-4. Kies bovenaan de functie `inrichten` en klik op **Uitvoeren** (geef toestemming als Google daarom vraagt). Dit maakt de tabbladen, geeft iedereen een eigen wachtwoord en persoonlijke link, en zet de oude antwoorden over.
+4. Kies bovenaan de functie `inrichten` en klik op **Uitvoeren** (geef toestemming als Google daarom vraagt). Dit maakt de tabbladen en geeft iedereen een eigen wachtwoord en persoonlijke link.
 5. Klik op **Implementeren > Nieuwe implementatie**, type **Web-app**:
    * Uitvoeren als: **Ik**
    * Wie heeft toegang: **Iedereen**

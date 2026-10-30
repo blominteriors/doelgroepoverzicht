@@ -163,28 +163,10 @@ function doGet(e) {
 }
 
 /**
- * Eenmalig: zet de testpersonen (QQQ) en de eerdere antwoorden uit de Claude-versie over naar deze Sheet.
- * Kies in de Apps Script-editor bovenaan de functie "importeerOudeAntwoorden" en klik op Uitvoeren.
- */
-function importeerOudeAntwoorden() {
-  const url = 'https://raw.githubusercontent.com/blominteriors/doelgroepoverzicht/main/migratie/testdata.json';
-  const rows = JSON.parse(UrlFetchApp.fetch(url).getContentText());
-  const s = sh_('Antwoorden');
-  if (s.getLastRow() === 0) s.appendRow(rows[0]);
-  rows.slice(1).forEach(function (r) {
-    const id = r[0];
-    let row = rowOf_(s, id);
-    if (!row) row = s.getLastRow() + 1;
-    s.getRange(row, 1, 1, 6).setNumberFormat('@').setValues([r]);
-  });
-  return rows.length - 1 + ' antwoorden overgezet';
-}
-
-/**
  * Eenmalig: richt een lege Google Sheet in. Maakt de tabbladen Toegang, Antwoorden en Config,
- * geeft iedereen een eigen wachtwoord en persoonlijke link, en zet de oude antwoorden over.
+ * en geeft iedereen een eigen wachtwoord en persoonlijke link.
  * Kies in de Apps Script-editor bovenaan de functie "inrichten" en klik op Uitvoeren.
- * Draai je het opnieuw, dan blijven bestaande wachtwoorden en antwoorden staan.
+ * Draai je het opnieuw, dan blijven bestaande wachtwoorden staan.
  */
 function inrichten() {
   const ss = SpreadsheetApp.getActive();
@@ -220,12 +202,12 @@ function inrichten() {
   if (c.getLastRow() === 0) c.appendRow(['Sleutel', 'Waarde']);
   c.getRange(1, 1, 1, 2).setFontWeight('bold');
   const cfg = readConfig_();
-  if (!cfg.respondents) writeConfig_('respondents', { names: mensen.map(function (m) { return m[0]; }).concat(['QQQ Sanne', 'QQQ Bram', 'QQQ Lotte', 'QQQ Daan', 'QQQ Eva']) });
+  if (!cfg.respondents) writeConfig_('respondents', { names: mensen.map(function (m) { return m[0]; }) });
   if (!cfg.segments) writeConfig_('segments', { list: [] });
 
   const leeg = ss.getSheetByName('Blad1') || ss.getSheetByName('Sheet1');
   if (leeg && leeg.getLastRow() === 0 && ss.getSheets().length > 1) ss.deleteSheet(leeg);
   ss.setActiveSheet(t);
 
-  return importeerOudeAntwoorden();
+  return 'Sheet ingericht';
 }
