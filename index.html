@@ -98,7 +98,7 @@ window.BLOM_STANDALONE = true;
   }
   function loginScreen(msg) {
     const o = document.createElement("div"); o.className = "salogin";
-    o.innerHTML = `<form><img alt="Blom" src=""><h1>Doelgroepoverzicht 2026</h1><p>Vul je persoonlijke wachtwoord in. Je vindt het in de link die je van Remy of Jan hebt gekregen.</p>
+    o.innerHTML = `<form><img alt="Blom" src=""><h1>Doelgroepoverzicht 2026</h1><p>Vul je persoonlijke wachtwoord in. Je hebt het wachtwoord van Remy gekregen.</p>
       <input type="password" autocomplete="current-password" placeholder="Wachtwoord" aria-label="Wachtwoord" required><button type="submit">Inloggen</button><p class="saerr" role="alert"></p></form>`;
     const logo = (typeof LOGO !== "undefined") ? LOGO.care : null; if (logo) o.querySelector("img").src = logo; else o.querySelector("img").remove();
     o.querySelector(".saerr").textContent = msg || "";
@@ -106,7 +106,7 @@ window.BLOM_STANDALONE = true;
       e.preventDefault(); code = o.querySelector("input").value.trim();
       o.querySelector("button").disabled = true; o.querySelector(".saerr").textContent = "Even controleren…";
       if (await tryLogin()) { try { localStorage.setItem(KEY, code); } catch (err) {} o.remove(); }
-      else { o.querySelector("button").disabled = false; o.querySelector(".saerr").textContent = "Dit wachtwoord klopt niet. Controleer de link of vraag een nieuw wachtwoord."; }
+      else { o.querySelector("button").disabled = false; o.querySelector(".saerr").textContent = "Dit wachtwoord klopt niet. Controleer het wachtwoord of vraag Remy om een nieuw wachtwoord."; }
     };
     document.body.append(o); setTimeout(() => o.querySelector("input").focus(), 50);
   }
